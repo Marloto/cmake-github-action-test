@@ -1,13 +1,16 @@
 name: learn-github-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
+run-name: ${{ github.actor }} is learning GitHub Actions with CMake
 on: [push]
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: jwlawson/actions-setup-cmake@v1.13
+      - run: cmake
+      - run: make
+      - run: mkdir result && cp foo result/
+      - uses: actions/upload-artifact@v3
         with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+          name: my-artifact
+          path: result
